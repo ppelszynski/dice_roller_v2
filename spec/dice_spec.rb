@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../dice'
 
 describe Dice do 
   it 'generates number from specified range' do
