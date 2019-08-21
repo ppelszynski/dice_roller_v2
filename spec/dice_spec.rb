@@ -50,4 +50,28 @@ describe Dice do
 
     expect(dice.roll.first(5)).to eq([20, 20, 20, 20, 20])
   end     
+
+  it 'fixes additional roll when random number is in desired range' do
+    dice = Dice.new
+    dice.random_number = 25
+    dice.numbers = [10, 20, 20, 20, 20, 20, 30]
+
+    expect(dice.roll.last).to eq(25)
+  end
+
+  it 'performs additional roll when random number is in specific range' do
+    dice = Dice.new
+    dice.random_number = 10
+    dice.numbers = [10, 20, 20, 20, 20, 20, 30]
+
+    20.times do
+      expect(dice.roll.last).to be_between(1, 20)
+    end
+
+    dice.random_number = 50
+
+    20.times do
+      expect(dice.roll.last).to be_between(1, 20)
+    end
+  end     
 end
