@@ -1,4 +1,3 @@
-require 'pry'
 require_relative './services/neighboring_numbers_filter'
 require_relative './services/opposite_numbers_filter'
 
@@ -20,7 +19,7 @@ class Dice
       filtered_numbers= filter(random_number, numbers)
     end
 
-    additional_roll(filtered_numbers)
+    additional_roll(filtered_numbers, random_number)
 
     filtered_numbers
   end
@@ -50,7 +49,11 @@ class Dice
     numbers.sum >= 55
   end
 
-  def additional_roll(result)
-    result << rand(1..20)
+  def additional_roll(result, random_number)
+    if random_number && random_number.between?(24, 30)
+      result << 25
+    else
+      result << rand(1..20)
+    end
   end
 end
