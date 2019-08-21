@@ -1,3 +1,5 @@
+require_relative './services/numbers_filter'
+
 class Dice
   attr_reader :numbers
 
@@ -6,22 +8,23 @@ class Dice
   end
 
   def roll(numbers = @numbers)
-    filter_numbers(numbers)
+    filtered_numbers = NumbersFilter.call(numbers)
+
+    until sum_valid?(filtered_numbers)
+      numbers = generate_numbers
+      filtered_numbers = NumbersFilter.call(numbers)
+    end
+
+    filtered_numbers
   end
 
   private
 
   def generate_numbers
-    numbers = (1..7).map { rand(1..20) }
+    (1..7).map { rand(1..20) }
   end
 
-  def filter_numbers(numbers)
-    min = numbers.min
-    max = numbers.max
-
-    numbers.delete_at(numbers.find_index(min))
-    numbers.delete_at(numbers.find_index(max))
-
-    numbers
+  def sum_valid?(numbers)
+    numbers.sum >= 55
   end
 end
