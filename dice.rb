@@ -15,6 +15,8 @@ class Dice
       filtered_numbers = NumbersFilter.call(numbers)
     end
 
+    additional_roll(filtered_numbers)
+
     filtered_numbers
   end
 
@@ -26,5 +28,9 @@ class Dice
 
   def sum_valid?(numbers)
     numbers.sum >= 55
+  end
+
+  def additional_roll(result)
+    result << rand(1..20)
   end
 end

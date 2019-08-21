@@ -29,8 +29,8 @@ describe Dice do
     numbers = [20, 20, 20, 20, 20, 20, 20]
 
     expect(dice.roll(numbers).first(5)).to eq([20, 20, 20, 20, 20])
-    30.times do
-      expect(dice.roll(numbers).last).to be_between(1, 30)
+    20.times do
+      expect(dice.roll(numbers).last).to be_between(1, 20)
     end
   end     
 end
