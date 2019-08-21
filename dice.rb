@@ -1,18 +1,23 @@
-require_relative './services/numbers_filter'
+require 'pry'
+require_relative './services/neighboring_numbers_filter'
+require_relative './services/opposite_numbers_filter'
 
 class Dice
-  attr_reader :numbers
+  attr_accessor :numbers
+  attr_accessor :random_number
 
   def initialize
+    @random_number = generate_random_number
     @numbers = generate_numbers
   end
 
-  def roll(numbers = @numbers)
-    filtered_numbers = NumbersFilter.call(numbers)
+  def roll
+    filtered_numbers = filter(random_number, numbers)
 
     until sum_valid?(filtered_numbers)
       numbers = generate_numbers
-      filtered_numbers = NumbersFilter.call(numbers)
+
+      filtered_numbers= filter(random_number, numbers)
     end
 
     additional_roll(filtered_numbers)
@@ -21,6 +26,21 @@ class Dice
   end
 
   private
+
+  def filter(number, numbers)
+    if number == 1
+      NeighboringNumbersFilter.call(numbers)
+    else
+      OppositeNumbersFilter.call(numbers)
+    end
+  end
+
+  def generate_random_number
+    number = nil
+    if rand(1..30).between?(1, 7)
+      number = rand(1..30)
+    end
+  end
 
   def generate_numbers
     (1..7).map { rand(1..20) }

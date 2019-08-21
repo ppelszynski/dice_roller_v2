@@ -1,4 +1,4 @@
-class NumbersFilter
+class OppositeNumbersFilter
   def initialize(numbers)
     @numbers = numbers
   end
