@@ -1,5 +1,6 @@
 require 'spec_helper'
 require_relative '../dice'
+require 'pry'
 
 describe Dice do 
   it 'generates 6 numbers' do
@@ -11,26 +12,42 @@ describe Dice do
 
   it 'passes and filters numbers with sum equal 55' do
     dice = Dice.new
-    numbers = [1, 5, 10, 10, 15, 15, 19]
+    dice.numbers = [1, 5, 10, 10, 15, 15, 19]
 
-    expect(dice.roll(numbers).first(5)).to eq([5, 10, 10, 15, 15])
+    expect(dice.roll.first(5)).to eq([5, 10, 10, 15, 15])
   end     
 
   it 'rerolls when sum less than 55' do
     dice = Dice.new
-    numbers = [0, 0, 0, 0, 0, 0, 0]
+    dice.numbers = [0, 0, 0, 0, 0, 0, 0]
 
-    expect(dice.roll(numbers).first(5)).not_to eq([0, 0, 0, 0, 0])
-    expect(dice.roll(numbers).length).to eq(6)
+    expect(dice.roll.first(5)).not_to eq([0, 0, 0, 0, 0])
+    expect(dice.roll.length).to eq(6)
   end     
 
   it 'adds additional roll' do
     dice = Dice.new
-    numbers = [20, 20, 20, 20, 20, 20, 20]
+    dice.numbers = [20, 20, 20, 20, 20, 20, 20]
 
-    expect(dice.roll(numbers).first(5)).to eq([20, 20, 20, 20, 20])
+    expect(dice.roll.first(5)).to eq([20, 20, 20, 20, 20])
     20.times do
-      expect(dice.roll(numbers).last).to be_between(1, 20)
+      expect(dice.roll.last).to be_between(1, 20)
     end
+  end
+
+  it 'excludes two lowest values when random number equals 1' do
+    dice = Dice.new
+    dice.numbers = [10, 10, 20, 20, 20, 20, 20]
+    dice.random_number = 1
+
+    expect(dice.roll.first(5)).to eq([20, 20, 20, 20, 20])
+  end     
+
+  it 'excludes minimum and maximum value when random number is other than 1' do
+    dice = Dice.new
+    dice.random_number = 55
+    dice.numbers = [10, 20, 20, 20, 20, 20, 30]
+
+    expect(dice.roll.first(5)).to eq([20, 20, 20, 20, 20])
   end     
 end
